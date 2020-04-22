@@ -7,6 +7,8 @@
 
   echo "-----------------------------------Q1-----------------------------------</br>";
 
+  echo round(6 + mt_rand() / mt_getrandmax() * (8 - 6), 1) / 10;
+
   $honda1 = new Honda;
   $nissan1 = new Nissan;
   $ferrari1 = new Ferrari;
@@ -88,9 +90,15 @@
   //レースの距離を決定する
   $distance = $calculator5->DesideDistance();
 
+  foreach($cars as $value) {
+    echo $value->Returnname() . "の速度一定期間→" . $value->ReturnDistance() . "m</br>";
+  }
+  echo "</br>";
+
   $times = array();
   foreach($cars as $value) {
     $times[] = $value->CalculateTime($distance);
   }
+  echo "</br>";
   $calculator5->DemandRank($times);
   ?>

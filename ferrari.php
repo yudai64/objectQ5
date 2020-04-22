@@ -14,8 +14,8 @@
       $this->crew = mt_rand(1, $this->capacity);
       $this->height = 94;
       $this->max_speed = 400; // km/h
-      $this->brake_distance = mt_rand(3000, 5000);
-      $this->standard_speed = $this->max_speed * 3 / 5;
+      $this->brake_distance = mt_rand(3000, 6000);
+      $this->standard_speed = $this->max_speed * round(5 + mt_rand() / mt_getrandmax() * (6 - 5), 1) / 10;
     }
 
     //現在の加速度と車高を表示する

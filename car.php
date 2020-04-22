@@ -95,6 +95,10 @@
       return $this->max_speed;
     }
 
+    function ReturnDistance() {
+      return $this->brake_distance;
+    }
+
     function DisplayMaxSpeed() {
       echo $this->name . "の最高速度は時速" . $this->max_speed . "kmです。</br></br>";
     }
@@ -103,36 +107,46 @@
 
       //速度をm/sに変更
       $max_speed = ($this->max_speed) * 10 * 10 * 10 /(60 * 60);
-      $standard_speed = ($this->standard_speed) * 10 * 10 * 10 / (60 * 60);
+      $standard_speed = round(($this->standard_speed) * 10 * 10 * 10 / (60 * 60));
 
       //基準速度に達するまでの時間を計算
-      $time1 = $standard_speed / $this->StepOnAccelerator ();
+      $time1 = round($standard_speed / $this->StepOnAccelerator ());
       //基準速度に達するまでに進んだ距離を計算
-      $distance1 = $this->StepOnAccelerator () * $time1 * $time1 / 2;
+      $distance1 = round($this->StepOnAccelerator () * $time1 * $time1 / 2);
 
       if ($race_distance <= $distance1) {
         //基準速度に達するまでにゴールしたとき
-        $result_time = sqrt(2 * $race_distance / $this->StepOnAccelerator ());
+        $result_time = round(sqrt(2 * $race_distance / $this->StepOnAccelerator ()));
+        echo $this->name . "は加速中に" . $result_time . "秒で" . $race_distance ."m進んでゴールしました。</br>";
       } else {
         $distance2 = $this->brake_distance;
         if ($race_distance <= $distance1 + $distance2) {
           //速度一定中にゴールした場合
-          $time2 = ($race_distance - $distance1) / $standard_speed;
+          $time2 = round(($race_distance - $distance1) / $standard_speed);
           $result_time = $time1 + $time2;
+          $distance = $race_distance - $distance1;
+          echo $this->name . "は加速中に" . $time1 . "秒で" . $distance1 . "m進み、ブレーキによる等速中に" . $time2 . "秒で" . $distance . "m進んでゴールしました。</br>";
         } else {
           //一定速度期間にかかった時間
-          $time2 = $distance2 / $standard_speed;
+          $time2 = round($distance2 / $standard_speed);
           //再加速してから最高速度に到達するまでの時間
-          $time3 = ($max_speed - $standard_speed) / $this->StepOnAccelerator();
+          $time3 = round(($max_speed - $standard_speed) / $this->StepOnAccelerator());
           //再加速してから最高速度に到達するまでの距離
-          $distance3 = $standard_speed * $time3 + $this->StepOnAccelerator() * $time3 * $time3;
+          $distance3 = round($standard_speed * $time3 + $this->StepOnAccelerator() * $time3 * $time3);
           if ($race_distance <= $distance1 + $distance2 + $distance3) {
             //再加速中にゴールした場合
-            $time4 = (-$standard_speed + sqrt($standard_speed * $standard_speed + 2 * $this->StepOnAccelerator() * ($race_distance - $distance1 - $distance2)));
+            $time4 = round((-$standard_speed + sqrt($standard_speed * $standard_speed + 2 * $this->StepOnAccelerator() * ($race_distance - $distance1 - $distance2))) / $this->StepOnAccelerator());
             $result_time = $time1 + $time2 + $time4;
+            $distance = $race_distance - $distance1 - $distance2;
+            echo $this->name . "は加速中に" . $time1 . "秒で" . $distance1 . "m進み、ブレーキによる等速中に" . $time2 . "秒で" . $distance2 . 
+            "m進み、再加速中に" . $time4 . "秒で" . $distance . "m進んでゴールしました。</br>";
           } else {
-            $time5 = ($race_distance - $distance1 - $distance2 - $distance3) / $max_speed;
+            //最高速度になってからゴールした場合
+            $time5 = round(($race_distance - $distance1 - $distance2 - $distance3) / $max_speed);
             $result_time = $time1 + $time2 + $time3 + $time5;
+            $distance = $race_distance - $distance1 - $distance2 - $distance3;
+            echo $this->name . "は加速中に" . $time1 . "秒で" . $distance1 . "m進み、ブレーキによる等速中に" . $time2 . "秒で" . $distance2 . 
+            "m進み、再加速中に" . $time3 . "秒で" . $distance3 . "mだけ進み、最高速度中に" . $time5 . "秒で" . $distance . "m進んでゴールしました。</br>";
           }
         }
       }

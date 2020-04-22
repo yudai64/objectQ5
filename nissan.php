@@ -12,7 +12,7 @@
       $this->crew = mt_rand(1, $this->capacity);
       $this->max_speed = 300; // km/h
       $this->brake_distance = mt_rand(1000, 3000);
-      $this->standard_speed = $this->max_speed * 4 / 5;
+      $this->standard_speed = $this->max_speed * round(6 + mt_rand() / mt_getrandmax() * (8 - 6), 1) / 10;
     }
 
     //日産の車をランダム数生成して合計金額と平均金額を計算して表示する。

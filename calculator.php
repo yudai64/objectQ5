@@ -41,7 +41,7 @@
 
   //レース距離を決定する
   function DesideDistance() {
-    $distance = (floor(mt_rand(5000, 20000)/1000))*1000;
+    $distance = (floor(mt_rand(500, 15000)/100))*100;
     echo "今回のレースの距離は" . $distance . "mです。</br></br>";
     return $distance;
   }
@@ -64,11 +64,13 @@
 
     foreach($array as $name => $time){
       $min = floor($time / 60);
-      $sec = $time % 60;
+      $sec = floor($time % 60);
       echo $name . "のタイムは" . $min . "分". $sec . "秒です。</br>";
     }
 
-    echo "平均タイムは" . floor($average_time / 60) ."分". ($average_time % 60) . "秒です。</br></br>";
+    $average_min = $average_time / 60;
+    $average_sec = $average_time % 60;
+    echo "平均タイムは" . floor($average_min) ."分". ($average_sec) . "秒です。</br></br>";
 
 
     //順番変更
